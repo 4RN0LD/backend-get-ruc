@@ -2,23 +2,26 @@ package com.marathon.evaluacion.service.impl;
 
 import com.marathon.evaluacion.entity.Comercio;
 import com.marathon.evaluacion.service.IComercioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class ComercioServiceImpl implements IComercioService {
+
+    @Autowired
+    RestTemplate restTemplate;
+
     @Override
-    public Comercio findByRuc(String ruc) {
-        if (ruc.equals("20430635612")) {
-            Comercio comercio = new Comercio("20430635612",
-                    "GRAP PERU SAC CONSULTORIO INFORMATICO",
-                    "ACTIVO",
-                    "AV. M. ABRIL 504   1402    LIMA LIMA  JES\u00c3\u00baS MAR\u00c3\u00adA",
-                    "150113",
-                    "LIMA",
-                    "LIMA",
-                    "JES\\u00c3\\u00baS MAR\\u00c3\\u00adA");
-            return comercio;
-        }
-        return null;
+    public Comercio findByRuc(String ruc, String token) {
+        ResponseEntity<Comercio> response =
+                restTemplate.getForEntity(
+                        "http://wsruc.com/Ruc2WS_JSON.php?tipo=2&ruc=" + ruc + "&token=" + token,
+                        Comercio.class);
+        Comercio comercio = response.getBody();
+        if (comercio.getRuc() == null)
+            return null;
+        return comercio;
     }
 }

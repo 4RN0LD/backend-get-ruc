@@ -4,6 +4,6 @@ import com.marathon.evaluacion.entity.Comercio;
 
 public interface IComercioService {
 
-    Comercio findByRuc(String ruc);
+    Comercio findByRuc(String ruc, String token);
 
 }

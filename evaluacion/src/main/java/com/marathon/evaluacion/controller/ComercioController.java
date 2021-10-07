@@ -19,7 +19,7 @@ public class ComercioController {
         if (!token.equals("cXdlcnR5bGFtYXJja19zYUBob3RtYWlsLmNvbXF3ZXJ0eQ")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        Comercio comercio = comercioService.findByRuc(ruc);
+        Comercio comercio = comercioService.findByRuc(ruc, token);
         if (comercio == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
